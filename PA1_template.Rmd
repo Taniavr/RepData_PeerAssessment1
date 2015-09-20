@@ -50,8 +50,29 @@ Total number of missing values
 sum(is.na(activity$steps))
 ```
 
+Filling missing values:
 
+```{r}
+activity2 <- merge(activity, totalstepsday, by="date", suffixes=c("", ".mean"))
+onlynas <- is.na(activity2$steps)
+activity2$steps[onlynas ] <- activity2$steps.mean[onlynas ]
+activity2<- activity2[, c(1:3)]
+head(activity2)
+```
 
+```{r}
+totalstepsday2  <- aggregate(data= activity2,steps~date, sum, na.rm=TRUE)
+head(totalstepsday2)
+```
+
+```{r}
+hist(totalstepsday2$steps, main="Total number of steps no missing values", xlab="steps")
+```
+
+```{r}
+mean(totalstepsday2$steps)
+median(totalstepsday2$steps)
+```
 
 ## Are there differences in activity patterns between weekdays and weekends?
 

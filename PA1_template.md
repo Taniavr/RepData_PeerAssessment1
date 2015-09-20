@@ -96,7 +96,49 @@ sum(is.na(activity$steps))
 ## [1] 2304
 ```
 
+Filling missing values:
 
+
+```r
+activity2 <- merge(activity, totalstepsday, by="date", suffixes=c("", ".mean"))
+onlynas <- is.na(activity2$steps)
+activity2$steps[onlynas ] <- activity2$steps.mean[onlynas ]
+activity2<- activity2[, c(1:3)]
+head(activity2)
+```
+
+```
+##         date steps interval
+## 1 2012-10-02     0     1740
+## 2 2012-10-02     0     1715
+## 3 2012-10-02     0     1725
+## 4 2012-10-02     0     1710
+## 5 2012-10-02     0     1735
+## 6 2012-10-02     0     1855
+```
+
+
+```r
+totalstepsday2  <- aggregate(data= activity2,steps~date, sum, na.rm=TRUE)
+head(totalstepsday2)
+```
+
+```
+##         date steps
+## 1 2012-10-02   126
+## 2 2012-10-03 11352
+## 3 2012-10-04 12116
+## 4 2012-10-05 13294
+## 5 2012-10-06 15420
+## 6 2012-10-07 11015
+```
+
+
+```r
+hist(totalstepsday2$steps, main="Total number of steps no missing values", xlab="steps")
+```
+
+![](PA1_template_files/figure-html/unnamed-chunk-11-1.png) 
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
